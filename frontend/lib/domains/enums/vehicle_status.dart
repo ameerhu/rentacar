@@ -1,0 +1,6 @@
+enum VehicleStatus {
+  AVAILABLE,
+  BOOKED,
+  OUTOFSERVICE,
+  UNAVAILABLE,
+}
