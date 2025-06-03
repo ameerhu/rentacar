@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/domains/booking_dto_ext.dart';
+import 'package:frontend/domains/enums/booking_status.dart';
 import 'package:provider/provider.dart';
 
 import '/_providers/booking_provider.dart';
@@ -6,7 +8,7 @@ import '/domains/booking_dto.dart';
 import 'add_edit_booking_screen.dart';
 
 class BookingDetailScreen extends StatelessWidget {
-  final BookingDTO booking;
+  final BookingDTOEXT booking;
 
   const BookingDetailScreen({super.key, required this.booking});
 
@@ -19,6 +21,7 @@ class BookingDetailScreen extends StatelessWidget {
         title: const Text('Booking Details'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
+          if(booking.status != BookingStatus.COMPLETED)
           IconButton(
             icon: const Icon(Icons.edit),
             onPressed: () {
@@ -30,6 +33,7 @@ class BookingDetailScreen extends StatelessWidget {
               );
             },
           ),
+          if(booking.status != BookingStatus.COMPLETED)
           IconButton(
             icon: const Icon(Icons.delete),
             onPressed: () {
@@ -65,7 +69,9 @@ class BookingDetailScreen extends StatelessWidget {
           children: [
             _buildDetailRow('ID', booking.id ?? 'N/A'),
             _buildDetailRow('Vehicle ID', booking.vehicleId ?? 'N/A'),
+            _buildDetailRow('Vehicle Name', booking.vehicleName ?? 'N/A'),
             _buildDetailRow('Customer ID', booking.customerId ?? 'N/A'),
+            _buildDetailRow('Customer Name', booking.customerName ?? 'N/A'),
             _buildDetailRow(
                 'Rental Start Date',
                 booking.rentalStartDate?.toLocal().toString().split(' ')[0] ??

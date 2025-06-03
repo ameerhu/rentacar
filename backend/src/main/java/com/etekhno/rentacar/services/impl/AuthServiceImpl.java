@@ -94,8 +94,7 @@ public class AuthServiceImpl implements IAuthService {
         }
 
         Party newUser = userService.createUser(registerDTOIn, httpServletRequest);
-
-
+        
         registerDTOIn.setPassword(passwordEncoder.encode(registerDTOIn.getPassword()));
         saveOrUpdateUserCredential(new UserCredential(), newUser.getId(), 0, registerDTOIn.getPassword());
 

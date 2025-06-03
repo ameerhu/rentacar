@@ -21,7 +21,7 @@ class PaymentDTO extends PaymentDTOIn {
     return PaymentDTO(
       id: json["id"] as String,
       overpaidAmount: (json["overpaidAmount"] as num).toDouble(),
-      paymentDate: DateTime.tryParse(json["paymentDate"] as String),
+      paymentDate: DateTime.fromMillisecondsSinceEpoch(json["paymentDate"] as int),
       paymentStatus: _parsePaymentStatus(json["paymentStatus"] as String),
       customerId: json["customerId"] as String,
       totalAmount: (json["totalAmount"] as num).toDouble(),

@@ -1,6 +1,7 @@
 package com.etekhno.rentacar.services.impl;
 
 import com.etekhno.rentacar.common.exceptions.EntityNotFoundException;
+import com.etekhno.rentacar.common.exceptions.ValidationException;
 import com.etekhno.rentacar.datamodel.Booking;
 import com.etekhno.rentacar.datamodel.Payment;
 import com.etekhno.rentacar.datamodel.PaymentAllocation;
@@ -9,6 +10,8 @@ import com.etekhno.rentacar.datamodel.repo.BookingRepo;
 import com.etekhno.rentacar.datamodel.repo.PaymentAllocationRepo;
 import com.etekhno.rentacar.datamodel.repo.PaymentRepo;
 import com.etekhno.rentacar.domain.BookingDTO;
+import com.etekhno.rentacar.domain.BookingDTOExt;
+import com.etekhno.rentacar.domain.PendingPaymentDTO;
 import com.etekhno.rentacar.domain.inbound.BookingDTOIn;
 import com.etekhno.rentacar.services.IBookingService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,16 +65,16 @@ public class BookingServiceImpl implements IBookingService {
 
     public void allocatePayment(String paymentId) {
         Payment payment = paymentRepo.findById(paymentId)
-                .orElseThrow(() -> new RuntimeException("Payment not found"));
+                .orElseThrow(() -> new EntityNotFoundException(EntityNotFoundException.Error.PaymentNotFoundError, "Payment not found"));
 
         if (payment.getTotalAmount().compareTo(BigDecimal.ZERO) == 0) {
-            throw new RuntimeException("Invalid payment amount.");
+            throw new ValidationException(ValidationException.Error.PaymentAmountInvalidError, "Invalid payment amount.");
         }
 
         List<Booking> bookings = bookingRepo.findByCustomerIdAndStatus(payment.getCustomerId(), BookingStatus.PENDING);
 
         if (bookings.isEmpty()) {
-            throw new RuntimeException("No pending bookings for this customer.");
+            throw new EntityNotFoundException(EntityNotFoundException.Error.PendingBookingNotFoundError, "No pending bookings for this customer.");
         }
 
         BigDecimal remainingAmountToAllocate = payment.getTotalAmount();
@@ -89,6 +92,7 @@ public class BookingServiceImpl implements IBookingService {
                     // Fully allocate the booking's remaining balance
                     booking.setAmountPaid(booking.getAmountPaid().add(amountToAllocate));
                     booking.setRemainingBalance(BigDecimal.ZERO);
+                    booking.setStatus(BookingStatus.COMPLETED);
                     remainingAmountToAllocate = remainingAmountToAllocate.subtract(amountToAllocate);
                     allocation.setAllocatedAmount(amountToAllocate);
                 } else {
@@ -111,7 +115,23 @@ public class BookingServiceImpl implements IBookingService {
         bookingRepo.saveAll(bookings);
     }
 
+    @Override
     public List<BookingDTO> getBookingDTOsByCustomerId(String customerId) {
         return bookingRepo.findBookingDTOsByCustomerId(customerId);
+    }
+
+    @Override
+    public List<PendingPaymentDTO> getAllPendingPayments() {
+        return bookingRepo.findAllPendingPayments();
+    }
+
+    @Override
+    public List<BookingDTO> getBookingDTOs() {
+        return bookingRepo.findBookingDTOs();
+    }
+
+    @Override
+    public List<BookingDTOExt> getBookingDTOExtList() {
+        return bookingRepo.findBookingDTOExtList();
     }
 }

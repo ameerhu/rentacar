@@ -26,12 +26,13 @@ class _PaymentListPageState extends State<PaymentListPage> {
         : paymentProvider.errorMessage != null
             ? Center(child: Text('Error: ${paymentProvider.errorMessage}'))
             : ListView.builder(
-                itemCount: paymentProvider.customerPayments.length,
+                itemCount: paymentProvider.payments.length,
                 itemBuilder: (context, index) {
-                  final payment = paymentProvider.customerPayments[index];
+                  final payment = paymentProvider.payments[index];
                   return ListTile(
-                    title: Text('Payment ID: ${payment.id ?? 'N/A'}'),
-                    subtitle: Text('Amount: ${payment.totalAmount ?? 'N/A'}'),
+                    title: Text('Payment ID: ${payment.id!.substring(0, 8)}'),
+                    subtitle: Text('Amount: ${payment.totalAmount}'),
+                    trailing: const Icon(Icons.payment),
                     onTap: () {
                       Navigator.push(
                         context,

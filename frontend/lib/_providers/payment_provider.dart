@@ -1,24 +1,21 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import '/domains/pending_payment_dto.dart';
 
-import '../_services/api_service.dart';
-import '../domains/inbound/payment_dto_in.dart';
-import '../domains/payment_dto.dart';
+import '/_services/api_service.dart';
+import '/domains/inbound/payment_dto_in.dart';
+import '/domains/payment_dto.dart';
 
 class PaymentProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
-  late List<PaymentDTO> _customerPayments = [
-    PaymentDTO(
-        id: "id",
-        overpaidAmount: 391,
-        customerId: "customerId",
-        totalAmount: 3891,
-        paymentMethod: "paymentMethod")
-  ];
+  late List<PendingPaymentDTO> _pendingPayments = [];
+  late List<PaymentDTO> _customerPayments = [];
   late List<PaymentDTO> _payments = [];
   String? _errorMessage;
   bool _isLoading = false;
+
+  List<PendingPaymentDTO> get pendingPayments => _pendingPayments;
 
   List<PaymentDTO> get customerPayments => _customerPayments;
 
@@ -41,15 +38,26 @@ class PaymentProvider extends ChangeNotifier {
     // notifyListeners();
   }
 
+  fetchPendingPayments() {
+    _isLoading = true;
+    _apiService.get("/payments/pending").then((data) => {
+          _pendingPayments = data
+              .map<PendingPaymentDTO>((json) => PendingPaymentDTO.fromJson(json))
+              .toList(),
+              notifyListeners(),
+          _isLoading = false
+        });
+  }
+
   fetchPaymentsByCustomer(String customerId) {
     _isLoading = true;
-    _apiService.get("/payments/$customerId").then((data) => {
+    _apiService.get("/customers/$customerId/payments").then((data) => {
           _customerPayments = data
               .map<PaymentDTO>((json) => PaymentDTO.fromJson(json))
               .toList(),
+              notifyListeners(),
           _isLoading = false
         });
-    notifyListeners();
   }
 
   addPayment(PaymentDTOIn payment) {

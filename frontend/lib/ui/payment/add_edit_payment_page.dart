@@ -88,7 +88,7 @@ class _AddEditPaymentPageState extends State<AddEditPaymentPage> {
                     '${option.cnic} - ${option.firstName}',
                 onSelected: (customer) {
                   setState(() {
-                    _customerIdController.text = customer.cnic;
+                    _customerIdController.text = customer.id;
                   });
                 },
                 fieldViewBuilder:

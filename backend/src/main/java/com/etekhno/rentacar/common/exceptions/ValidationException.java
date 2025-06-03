@@ -7,16 +7,18 @@ import org.springframework.http.HttpStatus;
 public class ValidationException extends CustomException {
     private static String errorGroup = "E004";
 
-    public static enum Error implements CustomError{
-        DTOValidationError("E00400","Input DTO Not Valid"),
-        ConstraintViolationError("E00401","Input Constraint Violation"),
-        PasswordNotAllowedError("E00402","Password shouldn't contain user's first or last name"),
-        InvalidPasswordError("E00403","Password shouldn't contain user's email"),
+    public static enum Error implements CustomError {
+        DTOValidationError("E00400", "Input DTO Not Valid"),
+        ConstraintViolationError("E00401", "Input Constraint Violation"),
+        PasswordNotAllowedError("E00402", "Password shouldn't contain user's first or last name"),
+        InvalidPasswordError("E00403", "Password shouldn't contain user's email"),
         PathVariableOrDTOIdNotMatchError("E00404", "PathVariable or DTO id not match"),
         EmailBodyNullError("E00405", "Email text/body should not be null"),
         PasswordContainsPartialEmailError("E00406", "Password shouldn't contain any part of user's email"),
-        PasswordMismatchError("E00407","Password and repeat password should be identical"),
-        PaymentAlreadyProceedError("E00408", "Payment already allocated over booking.");
+        PasswordMismatchError("E00407", "Password and repeat password should be identical"),
+        PaymentAlreadyProceedError("E00408", "Payment already allocated over booking."),
+
+        PaymentAmountInvalidError("E00409", "Payment amount is not valid.");
 
         private String code;
         private String message;

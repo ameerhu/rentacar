@@ -15,7 +15,7 @@ class AddEditBookingScreen extends StatefulWidget {
   const AddEditBookingScreen({super.key, this.booking});
 
   @override
-  _AddEditBookingScreenState createState() => _AddEditBookingScreenState();
+  State<AddEditBookingScreen> createState() => _AddEditBookingScreenState();
 }
 
 class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
@@ -153,13 +153,8 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
                     child: Text('${vehicle.company} - ${vehicle.model}'),
                   );
                 }).toList(),
-                onChanged: (value) {
-                  setState(() {
-                    _vehicleIdController.text = value!;
-                  });
-                },
-                validator: (value) =>
-                    value == null ? 'Please select a vehicle' : null,
+                onChanged: (value) => setState(() => _vehicleIdController.text = value! ),
+                validator: (value) => value == null ? 'Please select a vehicle' : null,
               ),
               DropdownButtonFormField(
                   decoration: const InputDecoration(labelText: 'Customer'),
@@ -234,9 +229,7 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
                   ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
                       onPressed: _submitForm,
-                      child: Text(widget.booking == null
-                          ? 'Add Booking'
-                          : 'Update Booking'),
+                      child: Text(widget.booking == null ? 'Add Booking' : 'Update Booking'),
                     ),
               if (bookingProvider.errorMessage != null)
                 Padding(

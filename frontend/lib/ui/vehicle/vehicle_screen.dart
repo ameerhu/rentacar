@@ -31,42 +31,38 @@ class _VehicleListScreenState extends State<VehicleListScreen> {
           ? const Center(child: CircularProgressIndicator())
           : vehicleProvider.errorMessage != null
               ? Center(child: Text('Error: ${vehicleProvider.errorMessage}'))
-              : Padding(
-                  padding:
-                      const EdgeInsets.only(left: 400, right: 400, top: 16),
-                  child: ListView.builder(
-                    itemCount: vehicleProvider.vehicles.length,
-                    itemBuilder: (context, index) {
-                      final vehicle = vehicleProvider.vehicles[index];
-                      return ListTile(
-                        title: Text.rich(
-                          TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: 'Model: ', // Bold text
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                              TextSpan(
-                                text: vehicle.company ?? '', // Normal text
-                              ),
-                            ],
+              : ListView.builder(
+                itemCount: vehicleProvider.vehicles.length,
+                itemBuilder: (context, index) {
+                  final vehicle = vehicleProvider.vehicles[index];
+                  return ListTile(
+                    title: Text.rich(
+                      TextSpan(
+                        children: [
+                          const TextSpan(
+                            text: 'Model: ', // Bold text
+                            style: TextStyle(fontWeight: FontWeight.bold),
                           ),
+                          TextSpan(
+                            text: vehicle.company ?? '', // Normal text
+                          ),
+                        ],
+                      ),
+                    ),
+                    subtitle: Text(vehicle.model ?? ''),
+                    trailing: Text(vehicle.ownerId!),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              VehicleDetailScreen(vehicle: vehicle),
                         ),
-                        subtitle: Text(vehicle.model ?? ''),
-                        trailing: Text(vehicle.ownerId!),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  VehicleDetailScreen(vehicle: vehicle),
-                            ),
-                          );
-                        },
                       );
                     },
-                  ),
-                ),
+                  );
+                },
+              ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

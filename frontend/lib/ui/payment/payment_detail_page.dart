@@ -7,7 +7,7 @@ import '../../domains/payment_dto.dart';
 class PaymentDetailScreen extends StatelessWidget {
   final PaymentDTO payment;
 
-  PaymentDetailScreen({required this.payment});
+  const PaymentDetailScreen({super.key, required this.payment});
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class PaymentDetailScreen extends StatelessWidget {
                             (value) => Navigator.popUntil(
                                 context, (route) => route.isFirst));
                       },
-                      child: Text('Delete'),
+                      child: const Text('Delete'),
                     ),
                   ],
                 ),

@@ -1,6 +1,7 @@
 package com.etekhno.rentacar.controller;
 
 import com.etekhno.rentacar.domain.PaymentDTO;
+import com.etekhno.rentacar.domain.PendingPaymentDTO;
 import com.etekhno.rentacar.domain.inbound.PaymentDTOIn;
 import com.etekhno.rentacar.services.IPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,11 @@ public class PaymentController {
     @GetMapping
     public List<PaymentDTO> getAllPayments() {
         return paymentService.getAllPayments();
+    }
+
+    @GetMapping("/pending")
+    public List<PendingPaymentDTO> getAllPendingPayments() {
+        return paymentService.getAllPendingPayments();
     }
 
     @PostMapping

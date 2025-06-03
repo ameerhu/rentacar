@@ -67,12 +67,15 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   Widget buildDesktopView() {
     return Center(
-      child: ConstrainedBox(
-        constraints: const BoxConstraints(maxWidth: 1000),
-        child: getWidget(
-          const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 4, crossAxisSpacing: 20.0, mainAxisSpacing: 10.0),
-          const EdgeInsets.only(top: 200.0),
+      child: Padding(
+        padding: const EdgeInsets.only(top: 24.0),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 1000),
+          child: getWidget(
+            const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 5, crossAxisSpacing: 20.0, mainAxisSpacing: 10.0),
+            const EdgeInsets.only(top: 150.0),
+          ),
         ),
       ),
     );
@@ -91,31 +94,38 @@ class _DashboardScreenState extends State<DashboardScreen>
       SliverGridDelegateWithFixedCrossAxisCount grid, EdgeInsetsGeometry eig) {
     List<ServiceTile> serviceTiles = [
       ServiceTile(
+        imagePath: 'assets/images/9.png',
+        name: 'Overview',
+        onTap: () {
+          Navigator.pushNamed(context, "/overview");
+        },
+      ),
+      ServiceTile(
         imagePath: 'assets/images/4.png',
         name: 'Customer Management',
         onTap: () {
-          Navigator.pushReplacementNamed(context, "/customer");
+          Navigator.pushNamed(context, "/customer");
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/1.png',
         name: 'Vehicle Management',
         onTap: () {
-          Navigator.pushReplacementNamed(context, "/vehicle");
+          Navigator.pushNamed(context, "/vehicle");
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/2.png',
         name: 'Booking Management',
         onTap: () {
-          Navigator.pushReplacementNamed(context, "/booking");
+          Navigator.pushNamed(context, "/booking");
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/3.png',
         name: 'Payment Management',
         onTap: () {
-          Navigator.pushReplacementNamed(context, "/payment");
+          Navigator.pushNamed(context, "/payment");
         },
       ),
     ];

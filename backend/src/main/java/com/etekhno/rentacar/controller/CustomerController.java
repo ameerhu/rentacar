@@ -2,17 +2,11 @@ package com.etekhno.rentacar.controller;
 
 import com.etekhno.rentacar.controller.util.RACDTOInValidator;
 import com.etekhno.rentacar.datamodel.Party;
-import com.etekhno.rentacar.domain.AddressDTO;
-import com.etekhno.rentacar.domain.BookingDTO;
-import com.etekhno.rentacar.domain.CustomerDTO;
-import com.etekhno.rentacar.domain.VehicleDTO;
+import com.etekhno.rentacar.domain.*;
 import com.etekhno.rentacar.domain.inbound.AddressDTOIn;
 import com.etekhno.rentacar.domain.inbound.CustomerDTOIn;
 import com.etekhno.rentacar.domain.inbound.RegisterDTOIn;
-import com.etekhno.rentacar.services.IAddressService;
-import com.etekhno.rentacar.services.IBookingService;
-import com.etekhno.rentacar.services.IUserService;
-import com.etekhno.rentacar.services.IVehicleService;
+import com.etekhno.rentacar.services.*;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +28,8 @@ public class CustomerController {
     IVehicleService vehicleService;
     @Autowired
     IBookingService bookingService;
+    @Autowired
+    IPaymentService paymentService;
 
     @PostMapping("/{customerId}/address")
     @ResponseStatus(HttpStatus.CREATED)
@@ -63,6 +59,13 @@ public class CustomerController {
     @Operation(summary = "This api is used to update address for particular user")
     public List<BookingDTO> getBookingDTOsByCustomer(@PathVariable("customerId") String customerId) {
         return bookingService.getBookingDTOsByCustomerId(customerId);
+    }
+
+    @GetMapping("/{customerId}/payments")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "This api is used to update address for particular user")
+    public List<PaymentDTO> getPaymentDTOsByCustomer(@PathVariable("customerId") String customerId) {
+        return paymentService.getCustomerPayments(customerId);
     }
 
     @GetMapping("{cnic}")

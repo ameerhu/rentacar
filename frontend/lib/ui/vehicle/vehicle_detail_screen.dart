@@ -8,7 +8,7 @@ import 'add_edit_vehicle_screen.dart';
 class VehicleDetailScreen extends StatelessWidget {
   final VehicleDTO vehicle;
 
-  const VehicleDetailScreen({required this.vehicle});
+  const VehicleDetailScreen({super.key, required this.vehicle});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +60,7 @@ class VehicleDetailScreen extends StatelessWidget {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 400, right: 400, top: 10),
+        padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
             _buildDetailRow('ID', vehicle.id ?? 'N/A'),

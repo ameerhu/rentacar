@@ -39,12 +39,12 @@ class AuthService {
   }
 
   Future<bool> isTokenValid() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
     String? token = await RACStorage.getToken();
     if (token == null) return false;
     final json = await _apiService.get("/users/currentUser");
     CustomerDTO user = CustomerDTO.fromJson(json);
-    if (user == null) return false;
+    if (user.cnic == null) return false;
     return true;
   }
 }

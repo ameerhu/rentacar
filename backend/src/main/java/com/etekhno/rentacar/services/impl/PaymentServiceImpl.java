@@ -7,6 +7,7 @@ import com.etekhno.rentacar.datamodel.Payment;
 import com.etekhno.rentacar.datamodel.enums.PaymentStatus;
 import com.etekhno.rentacar.datamodel.repo.PaymentRepo;
 import com.etekhno.rentacar.domain.PaymentDTO;
+import com.etekhno.rentacar.domain.PendingPaymentDTO;
 import com.etekhno.rentacar.domain.inbound.PaymentDTOIn;
 import com.etekhno.rentacar.services.IBookingService;
 import com.etekhno.rentacar.services.IPaymentService;
@@ -62,5 +63,15 @@ public class PaymentServiceImpl implements IPaymentService {
     @Override
     public List<PaymentDTO> getAllPayments() {
         return paymentRepo.findAllPayments();
+    }
+
+    @Override
+    public List<PaymentDTO> getCustomerPayments(String customerId) {
+        return paymentRepo.findAllPaymentsByCustomerId(customerId);
+    }
+
+    @Override
+    public List<PendingPaymentDTO> getAllPendingPayments() {
+        return bookingService.getAllPendingPayments();
     }
 }

@@ -8,7 +8,7 @@ import '/domains/vehicle_dto.dart';
 class AddEditVehicleScreen extends StatefulWidget {
   final VehicleDTO? vehicle;
 
-  AddEditVehicleScreen({this.vehicle});
+  const AddEditVehicleScreen({super.key, this.vehicle});
 
   @override
   _AddEditVehicleScreenState createState() => _AddEditVehicleScreenState();
@@ -91,7 +91,7 @@ class _AddEditVehicleScreenState extends State<AddEditVehicleScreen> {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       body: Padding(
-        padding: const EdgeInsets.only(left: 400, right: 400, top: 16),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: ListView(

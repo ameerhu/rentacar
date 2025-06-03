@@ -16,7 +16,8 @@ public class EntityNotFoundException extends CustomException {
         AddressEntityNotFoundError("E00304", "Address Entity Not Found"),
         UserAddressRelationError("E00305", "User Address Relation Entity Not Found"),
         ProjectEntityNotFoundError("E00306", "Project Entity Not Found"),
-        AwardEntityNotFoundError("E00307", "Award Entity Not Found");
+        AwardEntityNotFoundError("E00307", "Award Entity Not Found"),
+        PendingBookingNotFoundError("E00308", "Pending Booking Not Found");
 
         private String code;
         private String message;

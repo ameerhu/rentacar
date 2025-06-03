@@ -15,11 +15,11 @@ class ErrorDTO {
 
   factory ErrorDTO.fromJson(Map<String, dynamic> json) {
     return ErrorDTO(
-        errorGroup: json['errorGroup'] as String,
-        errorCode: json['errorCode'] as String,
-        errorMessage: json['errorMessage'] as String,
-        debugMessage: json['debugMessage'] as String,
-        httpStatus: json['httpStatus'] as String);
+        errorGroup: json['errorGroup'] ?? '',
+        errorCode: json['errorCode'] ?? '',
+        errorMessage: json['errorMessage'] ?? '',
+        debugMessage: json['debugMessage'] ?? '',
+        httpStatus: json['httpStatus'] ?? '');
   }
 
   Map<String, dynamic> toJson() {

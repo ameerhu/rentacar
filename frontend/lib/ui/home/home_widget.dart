@@ -13,7 +13,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
   bool? isValid;
 
   @override
@@ -31,7 +31,7 @@ class _MyHomePageState extends State<MyHomePage> {
     if (isValid == null)
       return const Center(child: CircularProgressIndicator());
     if (isValid!)
-      return DashboardScreen();
+      return const DashboardScreen();
     else
       return const LoginPage();
   }

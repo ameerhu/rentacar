@@ -9,7 +9,7 @@ class BookingListScreen extends StatefulWidget {
   const BookingListScreen({super.key});
 
   @override
-  _BookingListScreenState createState() => _BookingListScreenState();
+  State<BookingListScreen> createState() => _BookingListScreenState();
 }
 
 class _BookingListScreenState extends State<BookingListScreen> {
@@ -36,9 +36,11 @@ class _BookingListScreenState extends State<BookingListScreen> {
                   itemBuilder: (context, index) {
                     final booking = bookingProvider.bookings[index];
                     return ListTile(
-                      title: Text('Booking ID: ${booking.id ?? 'N/A'}'),
-                      subtitle: Text(
+                      leading: Text('ID: ${booking.id!.substring(0, 8)}'),
+                      subtitle: Text('Customer: ${booking.customerName}'),
+                      trailing:  Text(
                           'Status: ${booking.status.toString().split('.').last}'),
+                          title: Text('Model: ${booking.vehicleName}'),
                       onTap: () {
                         Navigator.push(
                           context,
