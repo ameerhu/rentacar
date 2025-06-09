@@ -42,9 +42,14 @@ class AuthService {
     await Future.delayed(const Duration(seconds: 3));
     String? token = await RACStorage.getToken();
     if (token == null) return false;
-    final json = await _apiService.get("/users/currentUser");
-    CustomerDTO user = CustomerDTO.fromJson(json);
-    if (user.cnic == null) return false;
+    try{
+      final json = await _apiService.get("/users/currentUser");
+      CustomerDTO user = CustomerDTO.fromJson(json);
+      if (user.cnic.isNotEmpty) return false;
+    }catch(e) {
+      RACStorage.deleteToken();
+      return false;
+    }
     return true;
   }
 }

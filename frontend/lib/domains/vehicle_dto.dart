@@ -9,6 +9,7 @@ class VehicleDTO {
   String? number;
   VehicleStatus status;
   String? ownerId;
+  String? ownerName;
   double? pricePerDay;
 
   VehicleDTO({
@@ -20,6 +21,7 @@ class VehicleDTO {
     this.number,
     this.status = VehicleStatus.AVAILABLE,
     this.ownerId,
+    this.ownerName,
     this.pricePerDay,
   });
 
@@ -33,6 +35,7 @@ class VehicleDTO {
       number: json['number'] as String?,
       status: _parseVehicleStatus(json['status']),
       ownerId: json['ownerId'] as String?,
+      ownerName: json['ownerName'] as String?,
       pricePerDay: (json['pricePerDay'] as num?)?.toDouble(),
     );
   }
@@ -47,6 +50,7 @@ class VehicleDTO {
       'number': number,
       'status': status.toString().split('.').last,
       'ownerId': ownerId,
+      'ownerName': ownerName,
       'pricePerDay': pricePerDay,
     };
   }

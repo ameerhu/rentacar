@@ -8,13 +8,15 @@ import '/domains/inbound/booking_dto_in.dart';
 class BookingProvider extends ChangeNotifier {
   final ApiService _apiService = ApiService();
   List<BookingDTOEXT> _bookings = [];
+  List<BookingDTOEXT> _customerBookings = [];
 
   List<BookingDTOEXT> get bookings => _bookings;
+  List<BookingDTOEXT> get customerBookings => _customerBookings;
+
   bool _isLoading = false;
-
   bool get isLoading => _isLoading;
-  String? _errorMessage;
 
+  String? _errorMessage;
   String? get errorMessage => _errorMessage;
 
   BookingProvider();
@@ -26,6 +28,22 @@ class BookingProvider extends ChangeNotifier {
       final res = await _apiService
           .get('/bookings');
       _bookings =
+          res.map<BookingDTOEXT>((json) => BookingDTOEXT.fromJson(json)).toList();
+    } catch (e) {
+      _errorMessage = e.toString();
+    } finally {
+      _isLoading = false;
+      notifyListeners();
+    }
+  }
+
+  Future<void> fetchBookingsByCustomerId(String customerId) async {
+    _isLoading = true;
+    _errorMessage = null;
+    try {
+      final res = await _apiService
+          .get('/customers/$customerId/bookings');
+      _customerBookings =
           res.map<BookingDTOEXT>((json) => BookingDTOEXT.fromJson(json)).toList();
     } catch (e) {
       _errorMessage = e.toString();

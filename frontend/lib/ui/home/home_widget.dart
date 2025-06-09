@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/_providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 import '/_services/auth_service.dart';
 import '/ui/dashboard/dashboard_page.dart';
 import '/ui/login/login_page.dart';
@@ -20,19 +22,19 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     _authService.isTokenValid().then((value) => {
-          setState(() {
-            isValid = value;
-          }),
-        });
+      setState(() {
+        isValid = value;
+      }),
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    if (isValid == null)
-      return const Center(child: CircularProgressIndicator());
-    if (isValid!)
-      return const DashboardScreen();
-    else
-      return const LoginPage();
+    return Consumer<AuthProvider>(builder: (ctx, provider, child) {
+      return provider.isAuthenticated == null 
+      ? const Center(child: CircularProgressIndicator())
+      : provider.isAuthenticated! ? 
+      const DashboardScreen() : const LoginPage();
+    },);
   }
 }

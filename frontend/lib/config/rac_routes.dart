@@ -1,4 +1,5 @@
 import 'package:frontend/ui/dashboard/overview_screen.dart';
+import 'package:frontend/ui/payment/add_edit_payment_page.dart';
 import 'package:frontend/ui/vehicle/add_edit_vehicle_screen.dart';
 
 import '/ui/booking/add_edit_booking_screen.dart';
@@ -19,10 +20,11 @@ final racRoutes = {
   /*'/dashboard': (context) => DashbosardScreen(
       userDTO: ModalRoute.of(context)!.settings.arguments as UserDTO),*/
   '/customer': (context) => const CustomerScreen(),
-  '/customer/add': (context) => AddEditCustomerScreen(),
+  '/customer/add': (context) => const AddEditCustomerScreen(),
   '/vehicle': (context) => const VehicleListScreen(),
   '/vehicle/add': (context) => const AddEditVehicleScreen(),
   '/booking': (context) => const BookingListScreen(),
   '/booking/add': (context) => const AddEditBookingScreen(),
   '/payment': (context) => const PaymentScreen(),
+  '/payment/add': (context) => const AddEditPaymentPage(),
 };

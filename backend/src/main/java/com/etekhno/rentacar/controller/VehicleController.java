@@ -2,6 +2,7 @@ package com.etekhno.rentacar.controller;
 
 import com.etekhno.rentacar.datamodel.enums.VehicleStatus;
 import com.etekhno.rentacar.domain.VehicleDTO;
+import com.etekhno.rentacar.domain.VehicleDTOExt;
 import com.etekhno.rentacar.domain.inbound.VehicleDTOIn;
 import com.etekhno.rentacar.services.IVehicleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,7 @@ public class VehicleController {
     }
 
     @GetMapping
-    public List<VehicleDTO> getAllVehicles() {
+    public List<VehicleDTOExt> getAllVehicles() {
         return vehicleService.getAllVehicles();
     }
 

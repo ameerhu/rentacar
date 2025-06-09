@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/domains/customer_dto.dart';
 import 'package:provider/provider.dart';
 
 import '../../_providers/payment_provider.dart';
 import 'payment_detail_page.dart';
 
 class PaymentListPage extends StatefulWidget {
-  const PaymentListPage({super.key});
+  final CustomerDTO? customer;
+  const PaymentListPage({super.key, this.customer});
 
   @override
   State<StatefulWidget> createState() => _PaymentListPageState();
@@ -21,14 +23,16 @@ class _PaymentListPageState extends State<PaymentListPage> {
   @override
   Widget build(BuildContext context) {
     final paymentProvider = Provider.of<PaymentProvider>(context);
+    final payments = widget.customer == null ? paymentProvider.payments : paymentProvider.customerPayments;
+
     return paymentProvider.isLoading
         ? const Center(child: CircularProgressIndicator())
         : paymentProvider.errorMessage != null
             ? Center(child: Text('Error: ${paymentProvider.errorMessage}'))
             : ListView.builder(
-                itemCount: paymentProvider.payments.length,
+                itemCount: payments.length,
                 itemBuilder: (context, index) {
-                  final payment = paymentProvider.payments[index];
+                  final payment = payments[index];
                   return ListTile(
                     title: Text('Payment ID: ${payment.id!.substring(0, 8)}'),
                     subtitle: Text('Amount: ${payment.totalAmount}'),

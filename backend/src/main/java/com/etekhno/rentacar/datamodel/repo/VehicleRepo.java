@@ -4,6 +4,7 @@ import com.etekhno.rentacar.constants.RACConstant;
 import com.etekhno.rentacar.datamodel.Vehicle;
 import com.etekhno.rentacar.datamodel.enums.VehicleStatus;
 import com.etekhno.rentacar.domain.VehicleDTO;
+import com.etekhno.rentacar.domain.VehicleDTOExt;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -15,9 +16,10 @@ public interface VehicleRepo extends CrudRepository<Vehicle, String> {
 
     List<Vehicle> findByStatus(VehicleStatus status);
 
-    @Query("Select new " + RACConstant.DOMAIN_PACKAGE + ".VehicleDTO(v.id, v.company, v.model, v.type, v.licensePlate," +
-            " v.number, v.status, v.ownerId, v.pricePerDay) from Vehicle v")
-    List<VehicleDTO> findVehicleDTOs();
+    @Query("Select new " + RACConstant.DOMAIN_PACKAGE + ".VehicleDTOExt(v.id, v.company, v.model, v.type, v.licensePlate," +
+            " v.number, v.status, v.ownerId, p.firstName, v.pricePerDay) from Vehicle v" +
+            " left join Party p on p.id = v.ownerId ")
+    List<VehicleDTOExt> findVehicleDTOs();
 
     @Query("Select new " + RACConstant.DOMAIN_PACKAGE + ".VehicleDTO(v.id, v.company, v.model, v.type, v.licensePlate," +
             " v.number, v.status, v.ownerId, v.pricePerDay) from Vehicle v where v.id = (:id)")

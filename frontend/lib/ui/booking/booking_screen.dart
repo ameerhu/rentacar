@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/ui/booking/booking_list.dart';
 import 'package:provider/provider.dart';
 
 import '/_providers/booking_provider.dart';
@@ -27,7 +28,7 @@ class _BookingListScreenState extends State<BookingListScreen> {
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Bookings')),
-      body: bookingProvider.isLoading
+      /* body: bookingProvider.isLoading
           ? const Center(child: CircularProgressIndicator())
           : bookingProvider.errorMessage != null
               ? Center(child: Text('Error: ${bookingProvider.errorMessage}'))
@@ -36,11 +37,11 @@ class _BookingListScreenState extends State<BookingListScreen> {
                   itemBuilder: (context, index) {
                     final booking = bookingProvider.bookings[index];
                     return ListTile(
+                      title: Text('Model: ${booking.vehicleName}'),
                       leading: Text('ID: ${booking.id!.substring(0, 8)}'),
                       subtitle: Text('Customer: ${booking.customerName}'),
                       trailing:  Text(
                           'Status: ${booking.status.toString().split('.').last}'),
-                          title: Text('Model: ${booking.vehicleName}'),
                       onTap: () {
                         Navigator.push(
                           context,
@@ -52,7 +53,8 @@ class _BookingListScreenState extends State<BookingListScreen> {
                       },
                     );
                   },
-                ),
+                ), */
+                body: const BookingListPage(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(

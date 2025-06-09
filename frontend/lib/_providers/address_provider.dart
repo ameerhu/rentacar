@@ -7,9 +7,10 @@ import '../domains/inbound/address_dto_in.dart';
 class AddressProvider with ChangeNotifier {
   final ApiService _service = ApiService();
   List<AddressDTO> _addresses = [];
-  AddressDTO? customerAddress;
+  AddressDTO? _customerAddress;
 
   List<AddressDTO> get addresses => _addresses;
+  AddressDTO? get customerAddress => _customerAddress;
 
   Future<void> loadAddresses() async {
     _addresses = await _service.get("/address");
@@ -41,9 +42,10 @@ class AddressProvider with ChangeNotifier {
 
   Future<void> setCustomerId(String id) async {
     var data = await _service.get("/customers/$id/address");
-    customerAddress = null;
-    if (data != null && data.isNotEmpty)
-      customerAddress = AddressDTO.fromJson(data);
+    _customerAddress = null;
+    if (data != null && data.isNotEmpty) {
+      _customerAddress = AddressDTO.fromJson(data);
+    }
     notifyListeners();
   }
 }

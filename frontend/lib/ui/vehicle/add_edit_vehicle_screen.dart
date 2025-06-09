@@ -11,7 +11,7 @@ class AddEditVehicleScreen extends StatefulWidget {
   const AddEditVehicleScreen({super.key, this.vehicle});
 
   @override
-  _AddEditVehicleScreenState createState() => _AddEditVehicleScreenState();
+  State<AddEditVehicleScreen> createState() => _AddEditVehicleScreenState();
 }
 
 class _AddEditVehicleScreenState extends State<AddEditVehicleScreen> {

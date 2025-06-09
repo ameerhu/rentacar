@@ -72,6 +72,7 @@ class VehicleDetailScreen extends StatelessWidget {
             _buildDetailRow(
                 'Status', vehicle.status.toString().split('.').last),
             _buildDetailRow('Owner ID', vehicle.ownerId ?? 'N/A'),
+            _buildDetailRow('Owner Name', vehicle.ownerName ?? 'N/A'),
             _buildDetailRow(
                 'Price Per Day', vehicle.pricePerDay?.toString() ?? 'N/A'),
           ],

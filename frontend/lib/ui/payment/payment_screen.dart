@@ -7,7 +7,7 @@ class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
 
   @override
-  _PaymentScreenState createState() => _PaymentScreenState();
+  State<StatefulWidget> createState() => _PaymentScreenState();
 }
 
 class _PaymentScreenState extends State<StatefulWidget> {
@@ -17,19 +17,12 @@ class _PaymentScreenState extends State<StatefulWidget> {
       appBar: AppBar(
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           title: const Text('Payments')),
-      body: const Row(
-        children: [
-          SizedBox(
-            width: 400,
-            height: 700,
-            child: PaymentListPage(),
-          ),
-          SizedBox(
-            width: 400,
-            height: 700,
-            child: AddEditPaymentPage(),
-          ),
-        ],
+      body: const PaymentListPage(),
+      floatingActionButton: FloatingActionButton(
+        child: const Icon(Icons.add),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, "/payment/add");
+        },
       ),
     );
   }

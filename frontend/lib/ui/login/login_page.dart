@@ -33,21 +33,12 @@ class _LoginPageState extends State<LoginPage> {
       // Process login (e.g., send API request)
       String email = _emailController.text;
       String password = _passwordController.text;
-      print('Email: $email, Password: $password');
       if (email.isNotEmpty && password.isNotEmpty) {
-        var userDTO = UserDTO(
-            id: "1234567890",
-            firstName: "First",
-            lastName: "Last",
-            email: email);
-        LoginDtoIn loginDtoIn = LoginDtoIn(email: email, password: password);
-        /*Navigator.pushReplacementNamed(context, '/dashboard',
-            arguments: userDTO);*/
+     LoginDtoIn loginDtoIn = LoginDtoIn(email: email, password: password);
         _authService.login(loginDtoIn).then((res) {
           UserDTO userDTO = UserDTO.fromJson(res);
           RACStorage.saveToken(userDTO.token!);
-          Navigator.pushReplacementNamed(context, '/dashboard',
-              arguments: userDTO);
+          Navigator.pushReplacementNamed(context, '/dashboard', arguments: userDTO);
         }).onError((err, st) => showErrorMessage(context, err));
       }
     }

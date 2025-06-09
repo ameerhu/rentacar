@@ -65,29 +65,11 @@ class _AddressScreenState extends State<AddressScreen> {
           streetController.text = provider.customerAddress!.street ?? '';
           stateController.text = provider.customerAddress!.state ?? '';
           postalCodeController.text =
-              provider.customerAddress!.postalCode.toString() ?? '';
+              provider.customerAddress!.postalCode.toString();
           countryController.text = provider.customerAddress!.country ?? '';
         }
         return Column(
           children: [
-            /*Expanded(
-              child: ListView.builder(
-                itemCount: provider.addresses.length,
-                itemBuilder: (context, index) {
-                  AddressDTOIn address = provider.addresses[index];
-                  return ListTile(
-                    title: Text("${address.street}, ${address.city}"),
-                    subtitle: Text("${address.state}, ${address.country}"),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () =>
-                          provider.removeAddress(address.postalCode),
-                    ),
-                  );
-                },
-              ),
-            ),*/
-
             Padding(
               padding: const EdgeInsets.all(16),
               child: Column(
@@ -112,7 +94,7 @@ class _AddressScreenState extends State<AddressScreen> {
                   const SizedBox(height: 10),
                   ElevatedButton(
                     onPressed: () => saveAddress(context),
-                    child: const Text("Add Address"),
+                    child: Text(provider.customerAddress == null ?  "Add Address" : "Update Address"),
                   ),
                 ],
               ),

@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:frontend/_providers/auth_provider.dart';
+import 'package:provider/provider.dart';
 
 import 'rac_storage.dart';
 
@@ -17,14 +19,16 @@ class BasicAuthInterceptor extends InterceptorsWrapper {
     super.onRequest(options, handler);
   }
 
-/*@override
+  @override
   void onError(DioException err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
-      await refreshToken();
-      return handler.resolve(await _retryRequest(err.requestOptions));
+      /* await refreshToken();
+      return handler.resolve(await _retryRequest(err.requestOptions)); */
     }
     super.onError(err, handler);
   }
+
+/*
 static Future<Response<dynamic>> _retryRequest(
       RequestOptions requestOptions) async {
     String? newToken = await RACStorage.getToken();

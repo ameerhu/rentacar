@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/_providers/auth_provider.dart';
 import 'package:provider/provider.dart';
 import '_providers/address_provider.dart';
 
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context) => BookingProvider()),
         ChangeNotifierProvider(create: (context) => PaymentProvider()),
         ChangeNotifierProvider(create: (context) => AddressProvider()),
+        ChangeNotifierProvider(create: (context) => AuthProvider()),
       ],
       child: MaterialApp(
         title: 'Rent A Car',
@@ -35,9 +37,6 @@ class MyApp extends StatelessWidget {
         ),
         routes: racRoutes,
         home: const MyHomePage(title: 'Flutter Demo Home Page'),
-        // home: const LoginWidget(),
-        // home: const RegistrationPage(),
-        // home: DashboardScreen(),
       ),
     );
   }

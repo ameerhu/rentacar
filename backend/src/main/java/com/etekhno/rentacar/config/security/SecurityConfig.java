@@ -31,8 +31,7 @@ public class SecurityConfig {
         String swaggerPermitList[] = {"/v3/api-docs/**", "/swagger-resources/**"};
 
         http.csrf(c -> c.disable())
-                .httpBasic(h -> h.disable())
-                .cors(c -> c.disable());
+                .httpBasic(h -> h.disable());
 
         http.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

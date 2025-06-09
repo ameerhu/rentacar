@@ -4,7 +4,6 @@ import 'package:frontend/domains/enums/booking_status.dart';
 import 'package:provider/provider.dart';
 
 import '/_providers/booking_provider.dart';
-import '/domains/booking_dto.dart';
 import 'add_edit_booking_screen.dart';
 
 class BookingDetailScreen extends StatelessWidget {
