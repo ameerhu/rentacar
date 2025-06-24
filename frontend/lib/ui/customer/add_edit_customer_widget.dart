@@ -118,7 +118,7 @@ class _AddEditCustomerWidgetState extends State<AddEditCustomerWidget> {
                   validator: (value) =>
                       value!.isEmpty ? 'Please enter phone no.' : null,
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 10),
                 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,

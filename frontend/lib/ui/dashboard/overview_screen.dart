@@ -65,7 +65,7 @@ class _OverviewScreenState extends State<OverviewScreen> {
             child: GridView.count(
               crossAxisCount: 2,
               childAspectRatio: 5/4.2,
-              // shrinkWrap: true,
+              shrinkWrap: true,
               children: [
                 const Card(
                   child: GridTile(

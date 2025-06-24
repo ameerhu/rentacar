@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frontend/domains/customer_dto.dart';
 import 'package:provider/provider.dart';
 
@@ -29,25 +30,32 @@ class _PaymentListPageState extends State<PaymentListPage> {
         ? const Center(child: CircularProgressIndicator())
         : paymentProvider.errorMessage != null
             ? Center(child: Text('Error: ${paymentProvider.errorMessage}'))
-            : ListView.builder(
-                itemCount: payments.length,
-                itemBuilder: (context, index) {
-                  final payment = payments[index];
-                  return ListTile(
-                    title: Text('Payment ID: ${payment.id!.substring(0, 8)}'),
-                    subtitle: Text('Amount: ${payment.totalAmount}'),
-                    trailing: const Icon(Icons.payment),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              PaymentDetailScreen(payment: payment),
+            : LayoutBuilder(
+                builder: (context, constraints) {
+                  return SingleChildScrollView(
+                    child: StaggeredGrid.count(
+                      crossAxisCount: constraints.maxWidth < 500 ? 1 : constraints.maxWidth < 800 ? 2 : 4,
+                      children: payments.map((payment) => 
+                        Card(
+                          child: ListTile(
+                            title: Text('Payment ID: ${payment.id!.substring(0, 8)}'),
+                            subtitle: Text('Amount: ${payment.totalAmount}'),
+                            trailing: payment.paymentMethod!.toLowerCase() == 'cash' ? const Icon(Icons.payment) : const Icon(Icons.payments),
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) =>
+                                      PaymentDetailScreen(payment: payment),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      );
-                    },
+                      ).toList(),
+                    ),
                   );
-                },
-              );
+                }
+            );
   }
 }

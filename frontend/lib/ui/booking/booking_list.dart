@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frontend/_providers/booking_provider.dart';
 import 'package:frontend/domains/booking_dto_ext.dart';
 import 'package:frontend/domains/customer_dto.dart';
@@ -32,35 +33,44 @@ class _BookingListPageState extends State<BookingListPage> {
         if (provider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
+
         return Expanded(
-          child: ListView.builder(
-            itemCount: bookings.length,
-            itemBuilder: (context, index) {
-              BookingDTOEXT booking = bookings[index];
-              return ListTile(
-                title: Text("${booking.id!.substring(0, 8)} ${booking.customerName ?? ""}"),
-                subtitle: (booking.remainingBalance != null && booking.remainingBalance! > 0) 
-                  ? Text("Pending: ${booking.remainingBalance ?? 0}", 
-                      style: const TextStyle(color: Colors.red, 
-                        fontWeight: FontWeight.bold),
-                        )
-                  : null,
-                trailing: statusIcon(booking.status),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BookingDetailScreen(booking: booking),
-                    ),
-                  );
-                },
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return SingleChildScrollView(
+                child: StaggeredGrid.count(
+                  crossAxisCount: constraints.maxWidth < 500 ? 1 : constraints.maxWidth < 800 ? 2 : 4,
+                  children: bookings.map((booking) => 
+                    Card(
+                      child: ListTile(
+                        title: Text("${booking.id!.substring(0, 8)} ${booking.customerName ?? ""}"),
+                        subtitle: (booking.remainingBalance != null && booking.remainingBalance! > 0) 
+                          ? Text("Pending: ${booking.remainingBalance ?? 0}", 
+                              style: const TextStyle(color: Colors.red, 
+                                fontWeight: FontWeight.bold),
+                                )
+                          : Text("Paid: ${booking.totalAmount}"),
+                        trailing: statusIcon(booking.status),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookingDetailScreen(booking: booking),
+                            ),
+                          );
+                        },
+                      ),
+                    )
+                  ).toList()
+                ),
               );
-            },
+            }
           ),
         );
       },
     );
   }
+
   statusIcon (bs) => 
     BookingStatus.COMPLETED == bs 
       ? const Icon(Icons.check_box) 
