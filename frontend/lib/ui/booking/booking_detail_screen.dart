@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/domains/booking_dto_ext.dart';
 import 'package:frontend/domains/enums/booking_status.dart';
+import 'package:frontend/widgets/row_detail.dart';
 import 'package:provider/provider.dart';
 
 import '/_providers/booking_provider.dart';
@@ -66,50 +67,28 @@ class BookingDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            _buildDetailRow('ID', booking.id ?? 'N/A'),
-            _buildDetailRow('Vehicle ID', booking.vehicleId ?? 'N/A'),
-            _buildDetailRow('Vehicle Name', booking.vehicleName ?? 'N/A'),
-            _buildDetailRow('Customer ID', booking.customerId ?? 'N/A'),
-            _buildDetailRow('Customer Name', booking.customerName ?? 'N/A'),
-            _buildDetailRow(
+            RowDetail('ID', booking.id ?? 'N/A'),
+            RowDetail('Vehicle ID', booking.vehicleId ?? 'N/A'),
+            RowDetail('Vehicle Name', booking.vehicleName ?? 'N/A'),
+            RowDetail('Customer ID', booking.customerId ?? 'N/A'),
+            RowDetail('Customer Name', booking.customerName ?? 'N/A'),
+            RowDetail(
                 'Rental Start Date',
                 booking.rentalStartDate?.toLocal().toString().split(' ')[0] ??
                     'N/A'),
-            _buildDetailRow(
+            RowDetail(
                 'Rental End Date',
                 booking.rentalEndDate?.toLocal().toString().split(' ')[0] ??
                     'N/A'),
-            _buildDetailRow(
+            RowDetail(
                 'Total Amount', booking.totalAmount?.toString() ?? 'N/A'),
-            _buildDetailRow('Amount Paid', booking.amountPaid.toString()),
-            _buildDetailRow('Remaining Balance',
+            RowDetail('Amount Paid', booking.amountPaid.toString()),
+            RowDetail('Remaining Balance',
                 booking.remainingBalance?.toString() ?? 'N/A'),
-            _buildDetailRow(
+            RowDetail(
                 'Status', booking.status.toString().split('.').last),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            flex: 2,
-            child: Text(
-              '$label:',
-              style: const TextStyle(fontWeight: FontWeight.bold),
-            ),
-          ),
-          Expanded(
-            flex: 3,
-            child: Text(value),
-          ),
-        ],
       ),
     );
   }

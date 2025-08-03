@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/util/date_time_util.dart';
 import 'package:provider/provider.dart';
 
 import '/_providers/payment_provider.dart';
@@ -57,10 +58,8 @@ class PaymentDetailScreen extends StatelessWidget {
             _buildDetailRow('Payment Method', payment.paymentMethod ?? 'N/A'),
             _buildDetailRow(
                 'Overpaid Amount', payment.overpaidAmount.toString()),
-            _buildDetailRow(
-                'Payment Date',
-                payment.paymentDate?.toLocal().toString().split(' ')[0] ??
-                    'N/A'),
+            _buildDetailRow('Payment Date',
+                DateTimeUtil.format(payment.paymentDate!.toLocal())),
             _buildDetailRow('Payment Status',
                 payment.paymentStatus.toString().split('.').last),
           ],
@@ -70,8 +69,11 @@ class PaymentDetailScreen extends StatelessWidget {
   }
 
   Widget _buildDetailRow(String label, String value) {
-    return Padding(
+    return Container(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: BoxDecoration(
+        border: Border(bottom: BorderSide(color: Colors.grey[300]!)),
+      ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

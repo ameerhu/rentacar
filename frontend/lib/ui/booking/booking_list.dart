@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:frontend/_providers/booking_provider.dart';
-import 'package:frontend/domains/booking_dto_ext.dart';
 import 'package:frontend/domains/customer_dto.dart';
 import 'package:frontend/domains/enums/booking_status.dart';
 import 'package:frontend/ui/booking/booking_detail_screen.dart';
+import 'package:frontend/ui/booking/widgets/no_booking_found.dart';
+import 'package:frontend/util/date_time_util.dart';
+import 'package:frontend/widgets/responsive_list_view.dart';
+import 'package:frontend/widgets/row_detail.dart';
 import 'package:provider/provider.dart';
 
 class BookingListPage extends StatefulWidget {
@@ -33,39 +35,40 @@ class _BookingListPageState extends State<BookingListPage> {
         if (provider.isLoading) {
           return const Center(child: CircularProgressIndicator());
         }
-
-        return Expanded(
-          child: LayoutBuilder(
-            builder: (context, constraints) {
-              return SingleChildScrollView(
-                child: StaggeredGrid.count(
-                  crossAxisCount: constraints.maxWidth < 500 ? 1 : constraints.maxWidth < 800 ? 2 : 4,
-                  children: bookings.map((booking) => 
-                    Card(
-                      child: ListTile(
-                        title: Text("${booking.id!.substring(0, 8)} ${booking.customerName ?? ""}"),
-                        subtitle: (booking.remainingBalance != null && booking.remainingBalance! > 0) 
-                          ? Text("Pending: ${booking.remainingBalance ?? 0}", 
-                              style: const TextStyle(color: Colors.red, 
-                                fontWeight: FontWeight.bold),
-                                )
-                          : Text("Paid: ${booking.totalAmount}"),
-                        trailing: statusIcon(booking.status),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => BookingDetailScreen(booking: booking),
-                            ),
-                          );
-                        },
-                      ),
-                    )
-                  ).toList()
-                ),
-              );
-            }
-          ),
+        
+        bookings.sort((a,b) => (b.remainingBalance ?? 0).compareTo(a.remainingBalance ?? 0));
+        return ResponsiveListView(
+          items: bookings, 
+          emptyWidget: const NoBookingFound(),
+          itemBuilder: (context, booking) =>
+            ListTile(
+              title: Text("${booking.id}"),
+              subtitle: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RowDetail('Customer', booking.customerName ?? '', mainAxisAlignment: MainAxisAlignment.start,),
+                  RowDetail('Vehicle', booking.vehicleName ?? '', mainAxisAlignment: MainAxisAlignment.start,),
+                  RowDetail('Start Date', DateTimeUtil.format(booking.rentalStartDate!.toLocal()), mainAxisAlignment: MainAxisAlignment.start,),
+                  RowDetail('End Date', DateTimeUtil.format(booking.rentalEndDate!.toLocal()), mainAxisAlignment: MainAxisAlignment.start,), 
+                  (booking.remainingBalance != null && booking.remainingBalance! > 0) 
+                  ? Text("Pending: ${booking.remainingBalance ?? 0}", 
+                      style: const TextStyle(color: Colors.red, 
+                        fontWeight: FontWeight.bold),
+                        )
+                  : Text("Paid: ${booking.amountPaid}"),
+                ],
+              ),
+              trailing: statusIcon(booking.status),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => BookingDetailScreen(booking: booking),
+                  ),
+                );
+              },
+            )
         );
       },
     );

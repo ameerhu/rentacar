@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/config/rac_routes.dart';
+import 'package:frontend/ui/base_page.dart';
 
 import '/constants/image_constants.dart';
 import '/ui/dashboard/service_tile.dart';
@@ -41,18 +43,15 @@ class _DashboardScreenState extends State<DashboardScreen>
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Dashboard'),
-      ),
+    return BasePage(
+      title: 'Dashboard',
       body: LayoutBuilder(builder: (context, constraints) {
-        if (constraints.maxWidth < 600) {
+        if (constraints.maxWidth < 500) {
           return buildMobileView();
-        } else if (constraints.maxWidth < 800) {
+        } else if (constraints.maxWidth < 1000) {
           return buildTabletView();
         }
-        return buildDesktopView();
+        return buildDesktopView(constraints.maxWidth < 1200 ? 3 : 6);
       }),
     );
   }
@@ -65,16 +64,20 @@ class _DashboardScreenState extends State<DashboardScreen>
     );
   }
 
-  Widget buildDesktopView() {
+  Widget buildDesktopView(int columnCount) {
     return Center(
       child: Padding(
         padding: const EdgeInsets.only(top: 24.0),
         child: ConstrainedBox(
-          constraints: const BoxConstraints(maxWidth: 1000),
+          constraints: columnCount == 6 ? const BoxConstraints(maxWidth: 1200) : const BoxConstraints(maxWidth: 800),
           child: getWidget(
-            const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5, crossAxisSpacing: 20.0, mainAxisSpacing: 10.0),
+            SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: columnCount, 
+              crossAxisSpacing: 20.0, 
+              mainAxisSpacing: 10.0
+            ),
             const EdgeInsets.only(top: 150.0),
+            showCar: columnCount == 6,
           ),
         ),
       ),
@@ -82,50 +85,65 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget buildTabletView() {
-    return getWidget(
-        const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2,
-        ),
-        const EdgeInsets.only(top: 50.0));
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 600),
+        child: getWidget(
+            const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 2,
+            ),
+            const EdgeInsets.only(top: 50.0)),
+      ),
+    );
   }
 
   Widget getWidget(
-      SliverGridDelegateWithFixedCrossAxisCount grid, EdgeInsetsGeometry eig) {
+    SliverGridDelegateWithFixedCrossAxisCount grid, 
+    EdgeInsetsGeometry eig, 
+    {bool showCar = false}
+  ) {
     List<ServiceTile> serviceTiles = [
       ServiceTile(
         imagePath: 'assets/images/9.png',
         name: 'Overview',
         onTap: () {
-          Navigator.pushNamed(context, "/overview");
+          Navigator.pushNamed(context, RacRoutes.overview);
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/4.png',
         name: 'Customer Management',
         onTap: () {
-          Navigator.pushNamed(context, "/customer");
+          Navigator.pushNamed(context, RacRoutes.customer);
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/1.png',
         name: 'Vehicle Management',
         onTap: () {
-          Navigator.pushNamed(context, "/vehicle");
+          Navigator.pushNamed(context, RacRoutes.vehicle);
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/2.png',
         name: 'Booking Management',
         onTap: () {
-          Navigator.pushNamed(context, "/booking");
+          Navigator.pushNamed(context, RacRoutes.booking);
         },
       ),
       ServiceTile(
         imagePath: 'assets/images/3.png',
         name: 'Payment Management',
         onTap: () {
-          Navigator.pushNamed(context, "/payment");
+          Navigator.pushNamed(context, RacRoutes.payment);
+        },
+      ),
+      ServiceTile(
+        imagePath: 'assets/images/11.png',
+        name: 'Notifications',
+        onTap: () {
+          Navigator.pushNamed(context, RacRoutes.notification);
         },
       ),
     ];
@@ -141,18 +159,19 @@ class _DashboardScreenState extends State<DashboardScreen>
             },
           ),
         ),
-        Padding(
-          padding: eig,
-          child: SizedBox(
-            height: 200,
-            child: AnimatedContainer(
-              duration: const Duration(seconds: 3),
-              curve: Curves.easeInOut,
-              transform: Matrix4.translationValues(_leftPosition, 0, 0),
-              child: Image.asset(ImageConstant.ayanrac),
+        if(showCar)
+          Padding(
+            padding: eig,
+            child: SizedBox(
+              height: 200,
+              child: AnimatedContainer(
+                duration: const Duration(seconds: 3),
+                curve: Curves.easeInOut,
+                transform: Matrix4.translationValues(_leftPosition, 0, 0),
+                child: Image.asset(ImageConstant.ayanrac),
+              ),
             ),
           ),
-        ),
       ],
     );
   }

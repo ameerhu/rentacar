@@ -117,16 +117,20 @@ class _LoginPageState extends State<LoginPage> {
                                     return null;
                                   },
                                 ),
-                                const SizedBox(height: 32.0),
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                      elevation: 5.0,
-                                      padding: const EdgeInsets.symmetric(
-                                          vertical: 16.0)),
-                                  onPressed: _submit,
-                                  child: const Text('Login'),
+                                SizedBox(
+                                  width: 200,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(vertical: 32.0),
+                                    child: ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                          elevation: 5.0,
+                                          padding: const EdgeInsets.symmetric(
+                                              vertical: 16.0)),
+                                      onPressed: _submit,
+                                      child: const Text('Login'),
+                                    ),
+                                  ),
                                 ),
-                                const SizedBox(height: 8.0),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pushNamed(context, '/register');

@@ -36,7 +36,7 @@ public class BookingServiceImpl implements IBookingService {
     public BookingDTO createBooking(BookingDTOIn bDTOIn) {
         Booking booking = new Booking(null, bDTOIn.getVehicleId(), bDTOIn.getCustomerId(),
                 bDTOIn.getRentalStartDate(), bDTOIn.getRentalEndDate(), bDTOIn.getTotalAmount(),
-                bDTOIn.getAmountPaid(), bDTOIn.getRemainingBalance(), bDTOIn.getStatus());
+                bDTOIn.getAmountPaid(), bDTOIn.getTotalAmount().subtract(bDTOIn.getAmountPaid()), bDTOIn.getStatus());
         booking = bookingRepo.save(booking);
 
         return new BookingDTO(booking.getId(), booking.getVehicleId(), booking.getCustomerId(),

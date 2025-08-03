@@ -53,7 +53,7 @@ class VehicleProvider extends ChangeNotifier {
     _errorMessage = null;
     notifyListeners();
     try {
-      await _apiService.put("/vehicles", body: vehicle.toJson());
+      await _apiService.put("/vehicles/${vehicle.id}", body: vehicle.toJson());
       await fetchVehicles();
     } catch (e) {
       _errorMessage = e.toString();

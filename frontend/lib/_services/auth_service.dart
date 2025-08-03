@@ -28,6 +28,11 @@ class AuthService {
     }
   }
 
+  Future<void> logout() {
+    RACStorage.deleteToken();
+    return Future.value();
+  }
+
   Future<Response> register(RegisterDtoIn registerDTOIn) async {
     return await _apiService.post('/auth/register', body: registerDTOIn);
     /*

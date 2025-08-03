@@ -28,7 +28,7 @@ class ApiService {
     _dio.options.receiveTimeout = const Duration(milliseconds: 3000);
 
     // Add interceptors if needed (e.g., logging, authentication)
-    _dio.interceptors.add(LogInterceptor(responseBody: true));
+    // _dio.interceptors.add(LogInterceptor(responseBody: true));
     _dio.interceptors.add(BasicAuthInterceptor());
   }
 

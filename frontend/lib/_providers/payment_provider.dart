@@ -27,7 +27,6 @@ class PaymentProvider extends ChangeNotifier {
 
   fetchPayments() {
     _isLoading = true;
-    _isLoading = false;
     _apiService.get("/payments").then((data) => {
           _payments = data
               .map<PaymentDTO>((json) => PaymentDTO.fromJson(json))

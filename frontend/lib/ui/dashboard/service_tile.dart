@@ -16,13 +16,15 @@ class ServiceTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
       child: Card(
+        shadowColor: Colors.amber,
         elevation: 4.0,
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
-            mainAxisSize: MainAxisSize.max,
-            children: [
+            mainAxisSize: MainAxisSize.min,
+              children: [
               Text(
                 name,
                 style: const TextStyle(fontWeight: FontWeight.bold),

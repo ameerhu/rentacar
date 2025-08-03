@@ -2,14 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../_providers/address_provider.dart';
-import '../../domains/address_dto.dart';
 import '../../domains/inbound/address_dto_in.dart';
 
 class AddressScreen extends StatefulWidget {
-  String? customerId;
-  late AddressDTO addressDTO;
-
-  AddressScreen({super.key, this.customerId});
+  final String? customerId;
+  const AddressScreen({super.key, this.customerId});
 
   @override
   State<AddressScreen> createState() => _AddressScreenState();
@@ -68,38 +65,40 @@ class _AddressScreenState extends State<AddressScreen> {
               provider.customerAddress!.postalCode.toString();
           countryController.text = provider.customerAddress!.country ?? '';
         }
-        return Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                children: [
-                  TextField(
-                      controller: cityController,
-                      decoration: const InputDecoration(labelText: "City")),
-                  TextField(
-                      controller: streetController,
-                      decoration: const InputDecoration(labelText: "Street")),
-                  TextField(
-                      controller: stateController,
-                      decoration: const InputDecoration(labelText: "State")),
-                  TextField(
-                      controller: postalCodeController,
-                      decoration:
-                          const InputDecoration(labelText: "Postal Code"),
-                      keyboardType: TextInputType.number),
-                  TextField(
-                      controller: countryController,
-                      decoration: const InputDecoration(labelText: "Country")),
-                  const SizedBox(height: 10),
-                  ElevatedButton(
-                    onPressed: () => saveAddress(context),
-                    child: Text(provider.customerAddress == null ?  "Add Address" : "Update Address"),
-                  ),
-                ],
-              ),
-            )
-          ],
+        return SingleChildScrollView(
+          child: Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  children: [
+                    TextField(
+                        controller: cityController,
+                        decoration: const InputDecoration(labelText: "City")),
+                    TextField(
+                        controller: streetController,
+                        decoration: const InputDecoration(labelText: "Street")),
+                    TextField(
+                        controller: stateController,
+                        decoration: const InputDecoration(labelText: "State")),
+                    TextField(
+                        controller: postalCodeController,
+                        decoration:
+                            const InputDecoration(labelText: "Postal Code"),
+                        keyboardType: TextInputType.number),
+                    TextField(
+                        controller: countryController,
+                        decoration: const InputDecoration(labelText: "Country")),
+                    const SizedBox(height: 10),
+                    ElevatedButton(
+                      onPressed: () => saveAddress(context),
+                      child: Text(provider.customerAddress == null ?  "Add Address" : "Update Address"),
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
         );
       },
     );
