@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/domains/booking_dto_ext.dart';
 import 'package:frontend/domains/enums/booking_status.dart';
+import 'package:frontend/util/date_time_util.dart';
 import 'package:frontend/widgets/row_detail.dart';
 import 'package:provider/provider.dart';
 
@@ -72,21 +73,12 @@ class BookingDetailScreen extends StatelessWidget {
             RowDetail('Vehicle Name', booking.vehicleName ?? 'N/A'),
             RowDetail('Customer ID', booking.customerId ?? 'N/A'),
             RowDetail('Customer Name', booking.customerName ?? 'N/A'),
-            RowDetail(
-                'Rental Start Date',
-                booking.rentalStartDate?.toLocal().toString().split(' ')[0] ??
-                    'N/A'),
-            RowDetail(
-                'Rental End Date',
-                booking.rentalEndDate?.toLocal().toString().split(' ')[0] ??
-                    'N/A'),
-            RowDetail(
-                'Total Amount', booking.totalAmount?.toString() ?? 'N/A'),
+            RowDetail('Rental Start Date', DateTimeUtil.ymdhm(booking.rentalStartDate!)),
+            RowDetail('Rental End Date', DateTimeUtil.ymdhm( booking.rentalEndDate!)),
+            RowDetail('Total Amount', booking.totalAmount?.toString() ?? 'N/A'),
             RowDetail('Amount Paid', booking.amountPaid.toString()),
-            RowDetail('Remaining Balance',
-                booking.remainingBalance?.toString() ?? 'N/A'),
-            RowDetail(
-                'Status', booking.status.toString().split('.').last),
+            RowDetail('Remaining Balance', booking.remainingBalance?.toString() ?? 'N/A'),
+            RowDetail('Status', booking.status.toString().split('.').last),
           ],
         ),
       ),

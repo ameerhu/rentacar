@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:frontend/auth/rac_storage.dart';
 import '/auth/basic_auth_interceptor.dart';
 
 import '/commons/error_dto.dart';
@@ -23,6 +24,14 @@ class ApiService {
   }
 
   ApiService.instance() : _dio = Dio() {
+    _init();
+  }
+
+  setBaseURL(baseURL){
+    _dio.options.baseUrl = baseURL;
+  }
+  
+  Future<void> _init() async {
     _dio.options.baseUrl = kIsWeb ? 'http://localhost:8080/api/v1' : 'http://10.0.2.2:8080/api/v1';
     _dio.options.connectTimeout = const Duration(milliseconds: 10000);
     _dio.options.receiveTimeout = const Duration(milliseconds: 3000);

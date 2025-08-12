@@ -49,13 +49,12 @@ class _BookingListPageState extends State<BookingListPage> {
                 children: [
                   RowDetail('Customer', booking.customerName ?? '', mainAxisAlignment: MainAxisAlignment.start,),
                   RowDetail('Vehicle', booking.vehicleName ?? '', mainAxisAlignment: MainAxisAlignment.start,),
-                  RowDetail('Start Date', DateTimeUtil.format(booking.rentalStartDate!.toLocal()), mainAxisAlignment: MainAxisAlignment.start,),
-                  RowDetail('End Date', DateTimeUtil.format(booking.rentalEndDate!.toLocal()), mainAxisAlignment: MainAxisAlignment.start,), 
+                  RowDetail('Start Date', DateTimeUtil.ymdhm(booking.rentalStartDate!.toLocal()), mainAxisAlignment: MainAxisAlignment.start,),
+                  RowDetail('End Date', DateTimeUtil.ymdhm(booking.rentalEndDate!.toLocal()), mainAxisAlignment: MainAxisAlignment.start,), 
                   (booking.remainingBalance != null && booking.remainingBalance! > 0) 
                   ? Text("Pending: ${booking.remainingBalance ?? 0}", 
-                      style: const TextStyle(color: Colors.red, 
-                        fontWeight: FontWeight.bold),
-                        )
+                      style: const TextStyle(color: Colors.red, fontWeight: FontWeight.bold),
+                      )
                   : Text("Paid: ${booking.amountPaid}"),
                 ],
               ),

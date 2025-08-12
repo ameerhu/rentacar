@@ -16,6 +16,7 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
+  final _baseURLController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   bool _obscurePassword = true;
@@ -23,21 +24,25 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   void dispose() {
+    _baseURLController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
   }
 
-  void _submit() {
+  void _submit() async {
     if (_formKey.currentState!.validate()) {
       // Process login (e.g., send API request)
+      if(_baseURLController.text.isNotEmpty) {
+        await RACStorage.saveBaseURL(_baseURLController.text.trim());
+      }
       String email = _emailController.text;
       String password = _passwordController.text;
       if (email.isNotEmpty && password.isNotEmpty) {
      LoginDtoIn loginDtoIn = LoginDtoIn(email: email, password: password);
-        _authService.login(loginDtoIn).then((res) {
+        _authService.login(loginDtoIn).then((res) async {
           UserDTO userDTO = UserDTO.fromJson(res);
-          RACStorage.saveToken(userDTO.token!);
+          await RACStorage.saveToken(userDTO.token!);
           Navigator.pushReplacementNamed(context, '/dashboard', arguments: userDTO);
         }).onError((err, st) => showErrorMessage(context, err));
       }
@@ -74,6 +79,10 @@ class _LoginPageState extends State<LoginPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
+                                TextFormField(
+                                  controller: _baseURLController,
+                                  decoration: const InputDecoration(labelText: 'URL'),
+                                ),
                                 TextFormField(
                                   controller: _emailController,
                                   decoration:
@@ -158,6 +167,10 @@ class _LoginPageState extends State<LoginPage> {
                         constraints:
                             const BoxConstraints(maxWidth: 100, maxHeight: 100),
                         child: Image.asset(ImageConstant.logo),
+                      ),
+                      TextFormField(
+                        controller: _baseURLController,
+                        decoration: const InputDecoration(labelText: 'URL'),
                       ),
                       TextFormField(
                         controller: _emailController,

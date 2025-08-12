@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend/_providers/address_provider.dart';
 import 'package:frontend/_providers/booking_provider.dart';
 import 'package:frontend/_providers/payment_provider.dart';
+import 'package:frontend/config/rac_routes.dart';
 import 'package:frontend/ui/base_page.dart';
 import 'package:frontend/ui/customer/customer_detail_screen.dart';
 import 'package:frontend/ui/customer/customer_detail_view.dart';
@@ -18,6 +19,7 @@ class CustomerScreen extends StatefulWidget {
 }
 
 class _CustomerScreenState extends State<CustomerScreen> {
+  String routeTo = RacRoutes.customerAdd;
   late AddressProvider addressProvider;
   @override
   void initState() {
@@ -29,44 +31,43 @@ class _CustomerScreenState extends State<CustomerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
     return BasePage(
       title: 'Customers',
       body: Row(
         children: [
           Expanded(
-            flex: 1,
+            flex: screenWidth > 1200 ? 1 : 2,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: CustomerListScreen(
-                callBack: (customer) => {
-                  addressProvider.setCustomerId(customer.id),
-                  Navigator.push(context,
-                    MaterialPageRoute(
-                      builder: (context) => CustomerDetailScreen(customer: customer, address: addressProvider.customerAddress),
-                    ),
-                  ),
-                },
                 onTap: (customer) => {
                   Provider.of<CustomerProvider>(context, listen: false).setSelectedCustomer(customer),
                   Provider.of<BookingProvider>(context, listen: false).fetchBookingsByCustomerId(customer.id),
                   Provider.of<PaymentProvider>(context, listen: false).fetchPaymentsByCustomer(customer.id),
                   addressProvider.setCustomerId(customer.id),
+                  if(screenWidth < 500)
+                    Navigator.push(context, MaterialPageRoute(builder: 
+                      (context) => CustomerDetailScreen(customer: customer,)
+                      )
+                    )
                 },
               ),
             ),
           ),
-          const VerticalDivider(width: 1, thickness: 1, color: Colors.deepOrange,),
-          const Expanded(
-            flex: 3, 
-            child: CustomerDetailView(),
-          ),
+          if(screenWidth>500) 
+            const VerticalDivider(width: 1, thickness: 1, color: Colors.deepOrange,),
+          if(screenWidth>500) 
+            Expanded(flex: screenWidth > 1200 ? 3 : 4, 
+              child: CustomerDetailView(onTabChange: (rt) => setState(() => routeTo = rt ))
+            ),
         ],
       ),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.add),
         onPressed: () {
           Provider.of<CustomerProvider>(context, listen: false).setSelectedCustomer(null);
-          Navigator.pushReplacementNamed(context, "/customer/add");
+          Navigator.pushReplacementNamed(context, routeTo);
         },
       ),
     );

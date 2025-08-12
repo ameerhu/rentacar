@@ -57,10 +57,12 @@ class _DashboardScreenState extends State<DashboardScreen>
   }
 
   Widget buildMobileView() {
-    return getWidget(
-      const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
-      const EdgeInsets.only(top: 50.0),
+    return Center(
+      child: getWidget(
+        const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, crossAxisSpacing: 10.0, mainAxisSpacing: 10.0),
+        const EdgeInsets.only(top: 50.0),
+      ),
     );
   }
 
@@ -147,32 +149,37 @@ class _DashboardScreenState extends State<DashboardScreen>
         },
       ),
     ];
-    return Column(
+    return showCar ? Column(
       children: [
-        SizedBox(
-          child: GridView.builder(
-            gridDelegate: grid,
-            shrinkWrap: true,
-            itemCount: serviceTiles.length,
-            itemBuilder: (context, index) {
-              return serviceTiles[index];
-            },
-          ),
-        ),
-        if(showCar)
-          Padding(
-            padding: eig,
-            child: SizedBox(
-              height: 200,
-              child: AnimatedContainer(
-                duration: const Duration(seconds: 3),
-                curve: Curves.easeInOut,
-                transform: Matrix4.translationValues(_leftPosition, 0, 0),
-                child: Image.asset(ImageConstant.ayanrac),
-              ),
+        _buildServiceTileWidget(grid, serviceTiles),
+        Padding(
+          padding: eig,
+          child: SizedBox(
+            height: 200,
+            child: AnimatedContainer(
+              duration: const Duration(seconds: 3),
+              curve: Curves.easeInOut,
+              transform: Matrix4.translationValues(_leftPosition, 0, 0),
+              child: Image.asset(ImageConstant.ayanrac),
             ),
           ),
+        ),
       ],
-    );
+    ) : _buildServiceTileWidget(grid, serviceTiles);
+  }
+
+  SizedBox _buildServiceTileWidget(
+    SliverGridDelegateWithFixedCrossAxisCount grid, 
+    List<ServiceTile> serviceTiles) {
+    return SizedBox(
+        child: GridView.builder(
+          gridDelegate: grid,
+          shrinkWrap: true,
+          itemCount: serviceTiles.length,
+          itemBuilder: (context, index) {
+            return serviceTiles[index];
+          },
+        ),
+      );
   }
 }

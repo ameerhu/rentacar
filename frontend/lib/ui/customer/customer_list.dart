@@ -7,16 +7,15 @@ import 'package:provider/provider.dart';
 import '../../_providers/customer_provider.dart';
 
 class CustomerListScreen extends StatefulWidget {
-  final Function(CustomerDTO customer)? callBack;
   final Function(CustomerDTO customer)? onTap;
-  const CustomerListScreen({super.key, this.callBack, this.onTap});
+  const CustomerListScreen({super.key, this.onTap});
 
   @override
   State<CustomerListScreen> createState() => _CustomerListScreenState();
 }
 
 class _CustomerListScreenState extends State<CustomerListScreen> {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -51,10 +50,6 @@ class _CustomerListScreenState extends State<CustomerListScreen> {
                     subtitle: Text('CNIC: ${customer.cnic}'),
                     selected: customer.cnic == customerProvider.selectedCustomer?.cnic,
                     selectedTileColor: Theme.of(context).colorScheme.inversePrimary,
-                    trailing: widget.callBack == null ? null : IconButton(
-                      icon: const Icon(Icons.edit), 
-                      onPressed: () => widget.callBack!(customer),
-                    ),
                     onTap: widget.onTap == null ? null : () => widget.onTap!(customer),
                   );
               }),

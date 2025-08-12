@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/util/date_time_util.dart';
 import 'package:provider/provider.dart';
 import '/_providers/customer_provider.dart';
 
@@ -41,12 +42,9 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
       _customerIdController.text = widget.booking!.customerId ?? '';
       _selectedStartDate = widget.booking!.rentalStartDate;
       _selectedEndDate = widget.booking!.rentalEndDate;
-      _rentalStartDateController.text =
-          _selectedStartDate?.toLocal().toString().split(' ')[0] ?? '';
-      _rentalEndDateController.text =
-          _selectedEndDate?.toLocal().toString().split(' ')[0] ?? '';
-      _totalAmountController.text =
-          widget.booking!.totalAmount?.toString() ?? '';
+      _rentalStartDateController.text = DateTimeUtil.ymdhm(_selectedStartDate!);
+      _rentalEndDateController.text = DateTimeUtil.ymdhm(_selectedEndDate!);
+      _totalAmountController.text = widget.booking!.totalAmount?.toString() ?? '';
       _amountPaidController.text = widget.booking!.amountPaid.toString();
       _selectedStatus = widget.booking!.status;
     }
@@ -104,7 +102,7 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
   }
 
   Future<void> _selectDate(BuildContext context, bool isStartDate) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: isStartDate
           ? _selectedStartDate ?? DateTime.now()
@@ -112,19 +110,24 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-    if (picked != null) {
-      setState(() {
-        if (isStartDate) {
-          _selectedStartDate = picked;
-          _rentalStartDateController.text =
-              picked.toLocal().toString().split(' ')[0];
-        } else {
-          _selectedEndDate = picked;
-          _rentalEndDateController.text =
-              picked.toLocal().toString().split(' ')[0];
-        }
-      });
-    }
+    if (pickedDate == null) return;
+
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: TimeOfDay.fromDateTime(isStartDate ? _selectedStartDate ?? DateTime.now() : _selectedEndDate ?? DateTime.now()),
+    );
+    final picked = DateTime(pickedDate.year, pickedDate.month, pickedDate.day,
+        pickedTime?.hour ?? DateTime.now().hour, pickedTime?.minute ?? 0);
+
+    setState(() {
+      if (isStartDate) {
+        _selectedStartDate = picked;
+        _rentalStartDateController.text = DateTimeUtil.ymdhm(picked);
+      } else {
+        _selectedEndDate = picked;
+        _rentalEndDateController.text = DateTimeUtil.ymdhm(picked);
+      }
+    });
   }
 
   @override
@@ -143,41 +146,38 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
           child: ListView(
             children: [
               DropdownButtonFormField<String>(
+                decoration: const InputDecoration(labelText: 'Vehicle'),
                 value: _vehicleIdController.text.isEmpty
                     ? null
                     : _vehicleIdController.text,
-                decoration: const InputDecoration(labelText: 'Vehicle'),
                 items: _vehicles.map((vehicle) {
                   return DropdownMenuItem<String>(
                     value: vehicle.id,
                     child: Text('${vehicle.company} - ${vehicle.model}'),
                   );
                 }).toList(),
-                onChanged: (value) => setState(() => _vehicleIdController.text = value! ),
-                validator: (value) => value == null ? 'Please select a vehicle' : null,
+                onChanged: (value) =>
+                    setState(() => _vehicleIdController.text = value!),
+                validator: (value) =>
+                    value == null ? 'Please select a vehicle' : null,
               ),
               DropdownButtonFormField(
-                  decoration: const InputDecoration(labelText: 'Customer'),
-                  items: _customers.map((c) {
-                    return DropdownMenuItem(
-                      value: c.id,
-                      child: Text('${c.firstName} - ${c.cnic}'),
-                    );
-                  }).toList(),
-                  value: _customerIdController.text.isEmpty
-                      ? null
-                      : _customerIdController.text,
-                  onChanged: (value) {
-                    setState(() {
-                      _customerIdController.text = value!;
-                    });
-                  }),
-              /*TextFormField(
-                controller: _customerIdController,
-                decoration: const InputDecoration(labelText: 'Customer ID'),
+                decoration: const InputDecoration(labelText: 'Customer'),
+                value: _customerIdController.text.isEmpty
+                    ? null
+                    : _customerIdController.text,
+                items: _customers.map((c) {
+                  return DropdownMenuItem(
+                    value: c.id,
+                    child: Text('${c.firstName} ${c.lastName} - ${c.cnic}'),
+                  );
+                }).toList(),
+                onChanged: (value) => setState(() {
+                  _customerIdController.text = value!;
+                }),
                 validator: (value) =>
-                    value!.isEmpty ? 'Please enter customer ID' : null,
-              ),*/
+                    value == null ? 'Please select a customer' : null,
+              ),
               TextFormField(
                 controller: _rentalStartDateController,
                 decoration:
@@ -229,7 +229,9 @@ class _AddEditBookingScreenState extends State<AddEditBookingScreen> {
                   ? const Center(child: CircularProgressIndicator())
                   : ElevatedButton(
                       onPressed: _submitForm,
-                      child: Text(widget.booking == null ? 'Add Booking' : 'Update Booking'),
+                      child: Text(widget.booking == null
+                          ? 'Add Booking'
+                          : 'Update Booking'),
                     ),
               if (bookingProvider.errorMessage != null)
                 Padding(

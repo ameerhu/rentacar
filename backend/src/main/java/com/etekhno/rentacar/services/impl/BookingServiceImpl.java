@@ -54,7 +54,7 @@ public class BookingServiceImpl implements IBookingService {
         booking.setRentalEndDate(updatedBooking.getRentalEndDate());
         booking.setStatus(updatedBooking.getStatus());
         booking.setAmountPaid(updatedBooking.getAmountPaid());
-        booking.setRemainingBalance(updatedBooking.getRemainingBalance());
+        booking.setRemainingBalance(updatedBooking.getTotalAmount().subtract(updatedBooking.getAmountPaid()));
 
         booking = bookingRepo.save(booking);
 

@@ -27,8 +27,9 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        String frPermitList[] = {"/config/**", "/auth/**", "/sse/**"};
+        String racPermitList[] = {"/config/**", "/auth/**", "/sse/**"};
         String swaggerPermitList[] = {"/v3/api-docs/**", "/swagger-resources/**"};
+        String[] staticResources = {"/*.js", "/*.css", "/*.html", "/assets/**", "/favicon.png", "/manifest.json"};
 
         http.csrf(c -> c.disable())
                 .httpBasic(h -> h.disable());
@@ -37,8 +38,9 @@ public class SecurityConfig {
 
         http.authorizeHttpRequests(req -> {
             req.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .requestMatchers(frPermitList).permitAll()
+                    .requestMatchers(racPermitList).permitAll()
                     .requestMatchers(swaggerPermitList).permitAll()
+                    .requestMatchers(staticResources).permitAll()
                     .anyRequest().authenticated();
         });
 

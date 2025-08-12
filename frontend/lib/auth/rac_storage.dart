@@ -3,6 +3,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 class RACStorage {
   static const _storage = FlutterSecureStorage();
   static const _key = "auth_token";
+  static const _keyBaseURL = "baseURL";
 
   static Future<void> saveToken(String token) async {
     await _storage.write(key: _key, value: token);
@@ -14,5 +15,13 @@ class RACStorage {
 
   static Future<void> deleteToken() async {
     await _storage.delete(key: _key);
+  }
+
+  static Future<void> saveBaseURL(String baseURL) async {
+    await _storage.write(key: _keyBaseURL, value: baseURL);
+  }
+
+  static Future<String?> getBaseURL() async {
+    return await _storage.read(key: _keyBaseURL);
   }
 }

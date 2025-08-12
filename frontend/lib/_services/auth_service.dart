@@ -17,6 +17,7 @@ class AuthService {
   AuthService.instance();
 
   Future<dynamic> login(LoginDtoIn loginDTOIn) async {
+    _apiService.setBaseURL(await RACStorage.getBaseURL());
     return await _apiService.post('/auth/login', body: loginDTOIn);
     try {
       final response = await _apiService.post('/auth/login', body: loginDTOIn);

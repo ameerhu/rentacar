@@ -25,7 +25,7 @@ public interface UserCredentialRepo extends CrudRepository<UserCredential, Strin
 
     @Transactional
     @Modifying
-    @Query("UPDATE UserCredential uc JOIN Party u ON u.id = uc.partyId set uc.loginAttempt = uc.loginAttempt + 1, " +
+    @Query(nativeQuery = true, value = "UPDATE UserCredential uc JOIN Party u ON u.id = uc.partyId set uc.loginAttempt = uc.loginAttempt + 1, " +
             "u.locked = CASE WHEN uc.loginAttempt >= (:maxLoginAttempt) THEN true ELSE u.locked END, " +
             "u.lockedTime = CASE WHEN uc.loginAttempt >= (:maxLoginAttempt) THEN now() ELSE u.lockedTime END " +
             "where u.email = (:email)")
@@ -33,7 +33,7 @@ public interface UserCredentialRepo extends CrudRepository<UserCredential, Strin
 
     @Transactional
     @Modifying
-    @Query("UPDATE UserCredential uc JOIN Party p ON p.id = uc.partyId " +
+    @Query(nativeQuery = true, value = "UPDATE UserCredential uc JOIN Party p ON p.id = uc.partyId " +
             " set uc.loginAttempt = 0, p.locked = false where p.email = (:email)")
     void resetAttemptForUser(String email);
 }

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/ui/coming_soon.dart';
-import 'package:frontend/ui/dashboard/overview_screen.dart';
+import 'package:frontend/ui/dashboard/overview/overview_screen.dart';
 import 'package:frontend/ui/payment/add_edit_payment_page.dart';
 import 'package:frontend/ui/vehicle/add_edit_vehicle_screen.dart';
 
